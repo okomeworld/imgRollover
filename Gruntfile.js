@@ -10,17 +10,17 @@ module.exports = function(grunt) {
 		concat : {
 			js : {
 				src : [
-				'js/imgRollover.namespace.js',
-				'js/imgRollover.util.js',
-				'js/imgRollover.default.js',
-				'js/imgRollover.fade.js'
+				'assets/imgRollover.namespace.js',
+				'assets/imgRollover.util.js',
+				'assets/imgRollover.default.js',
+				'assets/imgRollover.fade.js'
 				],
 				dest : 'js/imgRollover.js'
 			}
 		},
 		watch: {
 			js: {
-				files: ["js/*.js"],
+				files: ['assets/*.js','js/*.js'],
 				tasks: ['concat','uglify']
 			}
 		}
