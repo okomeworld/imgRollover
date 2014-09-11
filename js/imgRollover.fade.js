@@ -5,7 +5,8 @@
 (function($){
 
 	ImgRollover.Fade = function(el,suffix,time){
-		this.setImg(el,suffix);
+		this.utils = new ImgRollover.Utils(el,suffix);
+		this.setImg(el);
 		this.event(el,time);
 	}
 
@@ -23,33 +24,37 @@
 			});
 		},
 
-		setImg: function(el,suffix){
-
-			var utils = new ImgRollover.Utils(el,suffix);
+		setImg: function(el){
 
 			var that = this;
 			$(el).each(function(){
 				var $self = $(this);
 				var $parent = $self.parent();
-				$self.css({
-					'position': 'absolute',
-					'zIndex': 20
+				var $overImg = $self.clone().attr({
+					'src': that.utils.addSuffix(this)
 				});
-				var overImg = $self.clone().attr({
-					'src': utils.getOnSrc(this, suffix)
-				}).css({
-					'position': 'absolute',
-					'zIndex': 10
-				});
-				$parent.append(overImg).css({
+
+				that.setImgStyle($self,20);
+				that.setImgStyle($overImg, 10);
+
+				$parent.append($overImg).css({
 					'position': 'relative',
 					'display': 'block',
-					'width': utils.getImgWidth(),
-					'height': utils.getImgHeight(),
+					'width': that.utils.getImgWidth(),
+					'height': that.utils.getImgHeight(),
 					'overflow': 'hidden'
 				});
 			});
 		},
+
+		setImgStyle: function($el,z){
+			$el.css({
+				'position': 'absolute',
+				'zIndex': z,
+				'top': 0,
+				'left': 0
+			});
+		}
 
 	}
 

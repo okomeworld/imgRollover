@@ -2,6 +2,7 @@
  * 共通の処理を管理
  *
  */
+
 (function($){
 
 	ImgRollover.Utils = function(el,suffix,time){
@@ -32,15 +33,24 @@
 			return $(self).attr('src');
 		},
 
-		//mouseoverの画像パスを取得
-		getOnSrc: function(self){
+		//画像のパスに接尾語を加える
+		addSuffix: function(self){
 			return this.getSrc(self).replace(/^(.+)(\.[a-z]+)$/, '$1' + this.suffix + '$2');
 		},
 
-		//mouseleaveの画像パスを取得
-		getOffSrc: function(self){
+		//画像のパスから接尾語を削除する
+		removeSuffix: function(self){
 			return this.getSrc(self).replace(this.suffix,'');
+		},
+
+		//画像をプリロード
+		preload: function(){
+			var that = this;
+			$(this.el).each(function(){
+				$('<img />').attr('src',that.addSuffix(this,that.suffix));
+			});
 		}
+
 	}
 
 })(jQuery);
