@@ -20,18 +20,7 @@ var ImgRollover = ImgRollover || {};
 		}
 	}
 
-
 	ImgRollover.Utils.prototype = {
-
-		//画像の幅を取得
-		getImgWidth: function(){
-			return $(this.el).width();
-		},
-
-		//画像の高さを取得
-		getImgHeight: function(){
-			return $(this.el).height();
-		},
 
 		//画像パスを取得
 		getSrc: function(self){
@@ -46,14 +35,6 @@ var ImgRollover = ImgRollover || {};
 		//画像のパスから接尾語を削除する
 		removeSuffix: function(self){
 			return this.getSrc(self).replace(this.suffix,'');
-		},
-
-		//画像をプリロード
-		preload: function(){
-			var that = this;
-			$(this.el).each(function(){
-				$('<img />').attr('src',that.addSuffix(this,that.suffix));
-			});
 		}
 
 	}
@@ -68,20 +49,30 @@ var ImgRollover = ImgRollover || {};
 
 	ImgRollover.Default = function(el,suffix){
 		this.utils = new ImgRollover.Utils(el,suffix);
-		this.utils.preload();
+		this.preload();
 		this.event(el);
 	}
 
-	ImgRollover.Default.prototype.event = function(el){
-		var that = this;
-		$(el).on({
-			mouseover: function(){
-				$(this).attr('src', that.utils.addSuffix(this));
-			},
-			mouseleave: function(){
-				$(this).attr('src', that.utils.removeSuffix(this));
-			}
-		});
+	ImgRollover.Default.prototype = {
+
+		event: function(el){
+			var that = this;
+			$(el).on({
+				mouseover: function(){
+					$(this).attr('src', that.utils.addSuffix(this));
+				},
+				mouseleave: function(){
+					$(this).attr('src', that.utils.removeSuffix(this));
+				}
+			});
+		},
+
+		preload: function(){
+			var that = this;
+			$(this.el).each(function(){
+				$('<img />').attr('src',that.utiles.addSuffix(this));
+			});
+		}
 	}
 
 })(jQuery);
@@ -114,8 +105,12 @@ var ImgRollover = ImgRollover || {};
 
 		setImg: function(el){
 
+			var $el = $(el);
+			var imgWidth = $el.width();
+			var imgHeight = $el.height();
+
 			var that = this;
-			$(el).each(function(){
+			$el.each(function(){
 				var $self = $(this);
 				var $parent = $self.parent();
 				var $overImg = $self.clone().attr({
@@ -128,8 +123,8 @@ var ImgRollover = ImgRollover || {};
 				$parent.append($overImg).css({
 					'position': 'relative',
 					'display': 'block',
-					'width': that.utils.getImgWidth(),
-					'height': that.utils.getImgHeight(),
+					'width': imgWidth,
+					'height': imgHeight,
 					'overflow': 'hidden'
 				});
 			});

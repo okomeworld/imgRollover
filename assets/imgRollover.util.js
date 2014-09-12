@@ -15,18 +15,7 @@
 		}
 	}
 
-
 	ImgRollover.Utils.prototype = {
-
-		//画像の幅を取得
-		getImgWidth: function(){
-			return $(this.el).width();
-		},
-
-		//画像の高さを取得
-		getImgHeight: function(){
-			return $(this.el).height();
-		},
 
 		//画像パスを取得
 		getSrc: function(self){
@@ -41,14 +30,6 @@
 		//画像のパスから接尾語を削除する
 		removeSuffix: function(self){
 			return this.getSrc(self).replace(this.suffix,'');
-		},
-
-		//画像をプリロード
-		preload: function(){
-			var that = this;
-			$(this.el).each(function(){
-				$('<img />').attr('src',that.addSuffix(this,that.suffix));
-			});
 		}
 
 	}

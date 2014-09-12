@@ -26,8 +26,12 @@
 
 		setImg: function(el){
 
+			var $el = $(el);
+			var imgWidth = $el.width();
+			var imgHeight = $el.height();
+
 			var that = this;
-			$(el).each(function(){
+			$el.each(function(){
 				var $self = $(this);
 				var $parent = $self.parent();
 				var $overImg = $self.clone().attr({
@@ -40,8 +44,8 @@
 				$parent.append($overImg).css({
 					'position': 'relative',
 					'display': 'block',
-					'width': that.utils.getImgWidth(),
-					'height': that.utils.getImgHeight(),
+					'width': imgWidth,
+					'height': imgHeight,
 					'overflow': 'hidden'
 				});
 			});
