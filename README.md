@@ -13,11 +13,11 @@ imgRollover
 ```
 //Default
 $(function(){
-    new ImgRollover.default('.on', '_o');//('クラス名','接尾語')
+    new ImgRollover.default('.on', '_o');//('selector','suffix')
 });
 
 //Rollover with Fade
 $(function(){
-    new ImgRollover.Fade('.on', '_o', 200);//('クラス名','接尾語',フェード時間)
+    new ImgRollover.Fade('.on', '_o', 200);//('selector','suffix',fadetime)
 });
 ```
