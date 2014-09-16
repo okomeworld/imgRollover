@@ -5,16 +5,18 @@
 (function($){
 
 	ImgRollover.Default = function(el,suffix){
-		this.utils = new ImgRollover.Utils(el,suffix);
+		this.el = el;
+		this.suffix = suffix;
+		this.utils = new ImgRollover.Utils(this.el,this.suffix);
 		this.preload();
-		this.event(el);
+		this.event();
 	}
 
 	ImgRollover.Default.prototype = {
 
-		event: function(el){
+		event: function(){
 			var that = this;
-			$(el).on({
+			$(that.el).on({
 				mouseover: function(){
 					$(this).attr('src', that.utils.addSuffix(this));
 				},
@@ -26,10 +28,11 @@
 
 		preload: function(){
 			var that = this;
-			$(this.el).each(function(){
-				$('<img />').attr('src',that.utiles.addSuffix(this));
+			$(that.el).each(function(){
+				$('<img />').attr('src',that.utils.addSuffix(this));
 			});
 		}
+
 	}
 
 })(jQuery);

@@ -48,16 +48,18 @@ var ImgRollover = ImgRollover || {};
 (function($){
 
 	ImgRollover.Default = function(el,suffix){
-		this.utils = new ImgRollover.Utils(el,suffix);
+		this.el = el;
+		this.suffix = suffix;
+		this.utils = new ImgRollover.Utils(this.el,this.suffix);
 		this.preload();
-		this.event(el);
+		this.event();
 	}
 
 	ImgRollover.Default.prototype = {
 
-		event: function(el){
+		event: function(){
 			var that = this;
-			$(el).on({
+			$(that.el).on({
 				mouseover: function(){
 					$(this).attr('src', that.utils.addSuffix(this));
 				},
@@ -69,10 +71,11 @@ var ImgRollover = ImgRollover || {};
 
 		preload: function(){
 			var that = this;
-			$(this.el).each(function(){
-				$('<img />').attr('src',that.utiles.addSuffix(this));
+			$(that.el).each(function(){
+				$('<img />').attr('src',that.utils.addSuffix(this));
 			});
 		}
+
 	}
 
 })(jQuery);
@@ -84,32 +87,35 @@ var ImgRollover = ImgRollover || {};
 (function($){
 
 	ImgRollover.Fade = function(el,suffix,time){
-		this.utils = new ImgRollover.Utils(el,suffix);
-		this.setImg(el);
-		this.event(el,time);
+		this.el = el;
+		this.suffix = suffix;
+		this.time = time;
+		this.utils = new ImgRollover.Utils(this.el,this.suffix);
+		this.setImg();
+		this.event();
 	}
 
 	ImgRollover.Fade.prototype = {
 
-		event: function(el,time){
-
-			$(el).on({
+		event: function(){
+			var that = this;
+			$(that.el).on({
 				mouseover: function(){
-					$(this).fadeTo(time, 0);
+					$(this).stop().fadeTo(that.time, 0);
 				},
 				mouseleave: function(){
-					$(this).fadeTo(time, 1);
+					$(this).stop().fadeTo(that.time, 1);
 				}
 			});
 		},
 
-		setImg: function(el){
-
-			var $el = $(el);
-			var imgWidth = $el.width();
-			var imgHeight = $el.height();
+		setImg: function(){
 
 			var that = this;
+			var $el = $(that.el);
+			var imgWitdh = $el.width();
+			var imgHeight = $el.height();
+
 			$el.each(function(){
 				var $self = $(this);
 				var $parent = $self.parent();
@@ -123,7 +129,7 @@ var ImgRollover = ImgRollover || {};
 				$parent.append($overImg).css({
 					'position': 'relative',
 					'display': 'block',
-					'width': imgWidth,
+					'width': imgWitdh,
 					'height': imgHeight,
 					'overflow': 'hidden'
 				});
