@@ -5,14 +5,9 @@
 (function($){
 
 	ImgRollover.Fade = function(el,suffix,time){
-		this.el = el || '.imgOverWithFade';
-		this.suffix = suffix || '_o';
-		if(time === undefined){
-			this.time = 200;
-		}else{
-			this.time = time;
-		}
-		this.utils = new ImgRollover.Utils(this.el,this.suffix);
+		this.utils = new ImgRollover.Utils(el,suffix,time);
+		this.el = $(this.utils.getElements());
+		this.time = this.utils.getTime();
 		this.setImg();
 		this.event();
 	}

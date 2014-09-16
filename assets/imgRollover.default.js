@@ -5,9 +5,8 @@
 (function($){
 
 	ImgRollover.Default = function(el,suffix){
-		this.el = el || '.imgOver';
-		this.suffix = suffix || '_o';
-		this.utils = new ImgRollover.Utils(this.el,this.suffix);
+		this.utils = new ImgRollover.Utils(el,suffix);
+		this.el = $(this.utils.getElements());
 		this.preload();
 		this.event();
 	}
@@ -16,7 +15,7 @@
 
 		event: function(){
 			var that = this;
-			$(that.el).on({
+			that.el.on({
 				mouseover: function(){
 					$(this).attr('src', that.utils.addSuffix(this));
 				},
@@ -28,7 +27,7 @@
 
 		preload: function(){
 			var that = this;
-			$(that.el).each(function(){
+			that.el.each(function(){
 				$('<img />').attr('src',that.utils.addSuffix(this));
 			});
 		}

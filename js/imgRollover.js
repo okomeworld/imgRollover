@@ -7,17 +7,30 @@ var ImgRollover = ImgRollover || {};
  * 共通の処理を管理
  *
  */
-
 (function($){
 
 	ImgRollover.Utils = function(el,suffix,time){
-		this.el = el;
-		this.suffix = suffix;
-		this.time = time;
+		this.el = el || '.imgOver';
+		this.suffix = suffix || '_o';
+		if(time === undefined){
+			this.time = 200;
+		}else{
+			this.time = time;
+		}
 	}
 
 
 	ImgRollover.Utils.prototype = {
+
+		//要素を管理
+		getElements: function(){
+			return this.el;
+		},
+
+		//フェード時間を管理
+		getTime: function(){
+			return this.time;
+		},
 
 		//画像パスを取得
 		getSrc: function(self){
@@ -45,9 +58,8 @@ var ImgRollover = ImgRollover || {};
 (function($){
 
 	ImgRollover.Default = function(el,suffix){
-		this.el = el || '.imgOver';
-		this.suffix = suffix || '_o';
-		this.utils = new ImgRollover.Utils(this.el,this.suffix);
+		this.utils = new ImgRollover.Utils(el,suffix);
+		this.el = $(this.utils.getElements());
 		this.preload();
 		this.event();
 	}
@@ -56,7 +68,7 @@ var ImgRollover = ImgRollover || {};
 
 		event: function(){
 			var that = this;
-			$(that.el).on({
+			that.el.on({
 				mouseover: function(){
 					$(this).attr('src', that.utils.addSuffix(this));
 				},
@@ -68,7 +80,7 @@ var ImgRollover = ImgRollover || {};
 
 		preload: function(){
 			var that = this;
-			$(that.el).each(function(){
+			that.el.each(function(){
 				$('<img />').attr('src',that.utils.addSuffix(this));
 			});
 		}
@@ -84,14 +96,9 @@ var ImgRollover = ImgRollover || {};
 (function($){
 
 	ImgRollover.Fade = function(el,suffix,time){
-		this.el = el || '.imgOver';
-		this.suffix = suffix || '_o';
-		if(time === undefined){
-			this.time = 200;
-		}else{
-			this.time = time;
-		}
-		this.utils = new ImgRollover.Utils(this.el,this.suffix);
+		this.utils = new ImgRollover.Utils(el,suffix,time);
+		this.el = $(this.utils.getElements());
+		this.time = this.utils.getTime();
 		this.setImg();
 		this.event();
 	}
