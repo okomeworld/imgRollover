@@ -5,7 +5,7 @@
 (function($){
 
 	ImgRollover.Fade = function(el,suffix,time){
-		this.el = el || '.imgOver';
+		this.el = el || '.imgOverWithFade';
 		this.suffix = suffix || '_o';
 		if(time === undefined){
 			this.time = 200;
