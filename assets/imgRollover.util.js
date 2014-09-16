@@ -6,14 +6,11 @@
 (function($){
 
 	ImgRollover.Utils = function(el,suffix,time){
-		this.el = el || '.imgOver';
-		this.suffix = suffix || '_o';
-		if(time === undefined){
-			this.time = 200;
-		}else{
-			this.time = time;
-		}
+		this.el = el;
+		this.suffix = suffix;
+		this.time = time;
 	}
+
 
 	ImgRollover.Utils.prototype = {
 
