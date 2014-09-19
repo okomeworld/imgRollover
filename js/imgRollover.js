@@ -22,16 +22,6 @@ var ImgRollover = ImgRollover || {};
 
 	ImgRollover.Utils.prototype = {
 
-		//要素を管理
-		getElements: function(){
-			return this.el;
-		},
-
-		//フェード時間を管理
-		getTime: function(){
-			return this.time;
-		},
-
 		//画像パスを取得
 		getSrc: function(self){
 			return $(self).attr('src');
@@ -59,7 +49,7 @@ var ImgRollover = ImgRollover || {};
 
 	ImgRollover.Default = function(el,suffix){
 		this.utils = new ImgRollover.Utils(el,suffix);
-		this.el = $(this.utils.getElements());
+		this.el = $(this.utils.el);
 		this.preload();
 		this.event();
 	}
@@ -97,8 +87,8 @@ var ImgRollover = ImgRollover || {};
 
 	ImgRollover.Fade = function(el,suffix,time){
 		this.utils = new ImgRollover.Utils(el,suffix,time);
-		this.el = $(this.utils.getElements());
-		this.time = this.utils.getTime();
+		this.el = $(this.utils.el);
+		this.time = this.utils.time;
 		this.setImg();
 		this.event();
 	}

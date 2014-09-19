@@ -6,8 +6,8 @@
 
 	ImgRollover.Fade = function(el,suffix,time){
 		this.utils = new ImgRollover.Utils(el,suffix,time);
-		this.el = $(this.utils.getElements());
-		this.time = this.utils.getTime();
+		this.el = $(this.utils.el);
+		this.time = this.utils.time;
 		this.setImg();
 		this.event();
 	}

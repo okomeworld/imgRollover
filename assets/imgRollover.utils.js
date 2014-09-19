@@ -17,16 +17,6 @@
 
 	ImgRollover.Utils.prototype = {
 
-		//要素を管理
-		getElements: function(){
-			return this.el;
-		},
-
-		//フェード時間を管理
-		getTime: function(){
-			return this.time;
-		},
-
 		//画像パスを取得
 		getSrc: function(self){
 			return $(self).attr('src');

@@ -6,7 +6,7 @@
 
 	ImgRollover.Default = function(el,suffix){
 		this.utils = new ImgRollover.Utils(el,suffix);
-		this.el = $(this.utils.getElements());
+		this.el = $(this.utils.el);
 		this.preload();
 		this.event();
 	}
