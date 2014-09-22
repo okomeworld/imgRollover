@@ -97,7 +97,7 @@ var ImgRollover = ImgRollover || {};
 
 		event: function(){
 			var that = this;
-			$(that.el).on({
+			that.el.on({
 				mouseover: function(){
 					$(this).stop().fadeTo(that.time, 0);
 				},
@@ -110,11 +110,10 @@ var ImgRollover = ImgRollover || {};
 		setImg: function(){
 
 			var that = this;
-			var $el = $(that.el);
-			var imgWitdh = $el.width();
-			var imgHeight = $el.height();
+			var imgWitdh = that.el.width();
+			var imgHeight = that.el.height();
 
-			$el.each(function(){
+			that.el.each(function(){
 				var $self = $(this);
 				var $parent = $self.parent();
 				var $overImg = $self.clone().attr({
