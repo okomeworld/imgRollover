@@ -110,9 +110,6 @@ var ImgRollover = ImgRollover || {};
 		setImg: function(){
 
 			var that = this;
-			var imgWitdh = that.el.width();
-			var imgHeight = that.el.height();
-
 			that.el.each(function(){
 				var $self = $(this);
 				var $parent = $self.parent();
@@ -120,22 +117,19 @@ var ImgRollover = ImgRollover || {};
 					'src': that.utils.addSuffix(this)
 				});
 
-				that.setImgStyle($self,20);
-				that.setImgStyle($overImg, 10);
-
 				$parent.append($overImg).css({
 					'position': 'relative',
-					'display': 'block',
-					'width': imgWitdh,
-					'height': imgHeight,
-					'overflow': 'hidden'
+					'display': 'block'
 				});
+
+				that.setImgStyle($self, 'absolute', 20);
+				that.setImgStyle($overImg, 'relative', 10);
 			});
 		},
 
-		setImgStyle: function($el,z){
+		setImgStyle: function($el,string,z){
 			$el.css({
-				'position': 'absolute',
+				'position': string,
 				'zIndex': z,
 				'top': 0,
 				'left': 0
