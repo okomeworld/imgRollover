@@ -17,10 +17,12 @@
 			var that = this;
 			that.el.on({
 				mouseover: function(){
-					$(this).attr('src', that.utils.addSuffix(this));
+					var $self = $(this);
+					$self.attr('src', that.utils.addSuffix($self));
 				},
 				mouseleave: function(){
-					$(this).attr('src', that.utils.removeSuffix(this));
+					var $self = $(this);
+					$self.attr('src', that.utils.removeSuffix($self));
 				}
 			});
 		},
@@ -28,7 +30,8 @@
 		preload: function(){
 			var that = this;
 			that.el.each(function(){
-				$('<img />').attr('src',that.utils.addSuffix(this));
+				var $self = $(this);
+				$('<img />').attr('src',that.utils.addSuffix($self));
 			});
 		}
 

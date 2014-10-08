@@ -8,7 +8,7 @@
 		this.utils = new ImgRollover.Utils(el,suffix,time);
 		this.el = $(this.utils.el);
 		this.time = this.utils.time;
-		this.setImg();
+		this.setting();
 		this.event();
 	}
 
@@ -26,29 +26,38 @@
 			});
 		},
 
-		setImg: function(){
-
+		setting: function(){
 			var that = this;
 			that.el.each(function(){
 				var $self = $(this);
 				var $parent = $self.parent();
-				var $overImg = $self.clone().attr({
-					'src': that.utils.addSuffix(this)
-				});
-
-				$parent.append($overImg).css({
-					'position': 'relative',
-					'display': 'block'
-				});
-
+				var $overImg = that.cloneImg($self);
+				that.setOverImg($parent, $overImg);
+				that.setParentStyle($parent);
 				that.setImgStyle($self, 'absolute', 20);
 				that.setImgStyle($overImg, 'relative', 10);
 			});
 		},
 
-		setImgStyle: function($el,string,z){
+		cloneImg: function($self){
+			var $overImg = $self.clone().attr('src', this.utils.addSuffix($self));
+			return $overImg;
+		},
+
+		setOverImg: function($parent, $overImg){
+			$parent.append($overImg)
+		},
+
+		setParentStyle: function($parent){
+			$parent.css({
+				'position': 'relative',
+				'display': 'block'
+			});
+		},
+
+		setImgStyle: function($el,position,z){
 			$el.css({
-				'position': string,
+				'position': position,
 				'zIndex': z,
 				'top': 0,
 				'left': 0

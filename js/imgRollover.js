@@ -5,8 +5,8 @@ var ImgRollover = ImgRollover || {};
 
 /**
  * 共通の処理を管理
- *
  */
+
 (function($){
 
 	ImgRollover.Utils = function(el,suffix,time){
@@ -23,18 +23,18 @@ var ImgRollover = ImgRollover || {};
 	ImgRollover.Utils.prototype = {
 
 		//画像パスを取得
-		getSrc: function(self){
-			return $(self).attr('src');
+		getSrc: function($self){
+			return $self.attr('src');
 		},
 
 		//画像のパスに接尾語を加える
-		addSuffix: function(self){
-			return this.getSrc(self).replace(/^(.+)(\.[a-z]+)$/, '$1' + this.suffix + '$2');
+		addSuffix: function($self){
+			return this.getSrc($self).replace(/^(.+)(\.[a-z]+)$/, '$1' + this.suffix + '$2');
 		},
 
 		//画像のパスから接尾語を削除する
-		removeSuffix: function(self){
-			return this.getSrc(self).replace(this.suffix,'');
+		removeSuffix: function($self){
+			return this.getSrc($self).replace(this.suffix,'');
 		}
 
 	}
@@ -60,10 +60,12 @@ var ImgRollover = ImgRollover || {};
 			var that = this;
 			that.el.on({
 				mouseover: function(){
-					$(this).attr('src', that.utils.addSuffix(this));
+					var $self = $(this);
+					$self.attr('src', that.utils.addSuffix($self));
 				},
 				mouseleave: function(){
-					$(this).attr('src', that.utils.removeSuffix(this));
+					var $self = $(this);
+					$self.attr('src', that.utils.removeSuffix($self));
 				}
 			});
 		},
@@ -71,7 +73,8 @@ var ImgRollover = ImgRollover || {};
 		preload: function(){
 			var that = this;
 			that.el.each(function(){
-				$('<img />').attr('src',that.utils.addSuffix(this));
+				var $self = $(this);
+				$('<img />').attr('src',that.utils.addSuffix($self));
 			});
 		}
 
@@ -89,7 +92,7 @@ var ImgRollover = ImgRollover || {};
 		this.utils = new ImgRollover.Utils(el,suffix,time);
 		this.el = $(this.utils.el);
 		this.time = this.utils.time;
-		this.setImg();
+		this.setting();
 		this.event();
 	}
 
@@ -107,29 +110,38 @@ var ImgRollover = ImgRollover || {};
 			});
 		},
 
-		setImg: function(){
-
+		setting: function(){
 			var that = this;
 			that.el.each(function(){
 				var $self = $(this);
 				var $parent = $self.parent();
-				var $overImg = $self.clone().attr({
-					'src': that.utils.addSuffix(this)
-				});
-
-				$parent.append($overImg).css({
-					'position': 'relative',
-					'display': 'block'
-				});
-
+				var $overImg = that.cloneImg($self);
+				that.setOverImg($parent, $overImg);
+				that.setParentStyle($parent);
 				that.setImgStyle($self, 'absolute', 20);
 				that.setImgStyle($overImg, 'relative', 10);
 			});
 		},
 
-		setImgStyle: function($el,string,z){
+		cloneImg: function($self){
+			var $overImg = $self.clone().attr('src', this.utils.addSuffix($self));
+			return $overImg;
+		},
+
+		setOverImg: function($parent, $overImg){
+			$parent.append($overImg)
+		},
+
+		setParentStyle: function($parent){
+			$parent.css({
+				'position': 'relative',
+				'display': 'block'
+			});
+		},
+
+		setImgStyle: function($el,position,z){
 			$el.css({
-				'position': string,
+				'position': position,
 				'zIndex': z,
 				'top': 0,
 				'left': 0
