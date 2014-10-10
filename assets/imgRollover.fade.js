@@ -40,8 +40,7 @@
 		},
 
 		cloneImg: function($self){
-			var $overImg = $self.clone().attr('src', this.utils.addSuffix($self));
-			return $overImg;
+			return $self.clone().attr('src', this.utils.addSuffix($self));
 		},
 
 		setOverImg: function($parent, $overImg){
