@@ -5,7 +5,7 @@
 (function($){
 
 	ImgRollover.Base = function(el,suffix,opt){
-		this.el     = el     || '.imgOver';
+		this.el     = el     || $('.imgOver');
 		this.suffix = suffix || '_o';
 
 		this.prepare(opt);
@@ -32,9 +32,15 @@
 
 		//イベントハンドラの追加
 		setEvent: function(){
-			this.el.on({
-				mouseover:  this.onMouseOverEffect,
-				mouseleave: this.onMouseLeaveEffect
+			var that = this;
+			that.el.on({
+				mouseover:  function(){
+					this.onMouseOverEffect(thath);
+				},
+				mouseleave: fucntion(){
+					this.onMouseLeaveEffect(that);
+				}:w
+
 			});
 		},
 
