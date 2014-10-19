@@ -4,37 +4,27 @@
 
 (function($){
 
-	ImgRollover.Default = function(el,suffix){
-		this.utils = new ImgRollover.Utils(el,suffix);
-		this.el = $(this.utils.el);
-		this.preload();
-		this.event();
-	}
+	$.extend(ImgRollover.Default, ImgRollover.Base, {
 
-	ImgRollover.Default.prototype = {
-
-		event: function(){
-			var that = this;
-			that.el.on({
-				mouseover: function(){
-					var $self = $(this);
-					$self.attr('src', that.utils.addSuffix($self));
-				},
-				mouseleave: function(){
-					var $self = $(this);
-					$self.attr('src', that.utils.removeSuffix($self));
-				}
-			});
-		},
-
-		preload: function(){
+		prepare: function(opt){
+			// 画像のプレロード
+			// これもどのパターンでも使いそうなんでBaseに定義したよさげ
 			var that = this;
 			that.el.each(function(){
 				var $self = $(this);
-				$('<img />').attr('src',that.utils.addSuffix($self));
+				$('<img />').attr('src',that.addSuffix($self));
 			});
-		}
+		},
 
-	}
+		onMouseOverEvent: function(that){
+			var $self = $(this);
+			$self.attr('src', that.addSuffix($self));
+		},
+
+		onMouseLeaveEvent: function(that){
+			var $self = $(this);
+			$self.attr('src', that.removeSuffix($self));
+		}
+	});
 
 })(jQuery);
