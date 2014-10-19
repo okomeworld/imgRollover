@@ -4,7 +4,11 @@
 
 (function($){
 
-	$.extend(ImgRollover.Default, ImgRollover.Base, {
+	ImgRollover.Default = function(){
+		ImgRollover.Base.apply(this, arguments);
+	};
+
+	$.extend(ImgRollover.Default.prototype, ImgRollover.Base.prototype, {
 
 		prepare: function(opt){
 			// 画像のプレロード
