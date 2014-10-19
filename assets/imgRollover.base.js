@@ -35,11 +35,13 @@
 			var that = this;
 			that.el.on({
 				mouseover:  function(){
-					this.onMouseOverEffect(thath);
+					var $el = $(this);
+					that.onMouseOverEffect($el);
 				},
-				mouseleave: fucntion(){
-					this.onMouseLeaveEffect(that);
-				}:w
+				mouseleave: function(){
+					var $el = $(this);
+					that.onMouseLeaveEffect($el);
+				}
 
 			});
 		},
@@ -57,7 +59,7 @@
 		// [abstract] mouseleaveのイベントハンドラ
 		onMouseLeaveEffect: function(){
 			if (console) console.error("Must Implement onMouseLeaveEffect method!!");
-		},
+		}
 
 	}
 

@@ -16,15 +16,14 @@
 			});
 		},
 
-		onMouseOverEvent: function(that){
-			var $self = $(this);
-			$self.attr('src', that.addSuffix($self));
+		onMouseOverEffect: function($el){
+			$el.attr('src', this.addSuffix($el));
 		},
 
-		onMouseLeaveEvent: function(that){
-			var $self = $(this);
-			$self.attr('src', that.removeSuffix($self));
+		onMouseLeaveEffect: function($el){
+			$el.attr('src', this.removeSuffix($el));
 		}
+
 	});
 
 })(jQuery);
