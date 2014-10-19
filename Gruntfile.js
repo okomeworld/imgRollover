@@ -11,9 +11,9 @@ module.exports = function(grunt) {
 			js : {
 				src : [
 				'assets/imgRollover.namespace.js',
-				'assets/imgRollover.utils.js',
+				'assets/imgRollover.base.js',
 				'assets/imgRollover.default.js',
-				'assets/imgRollover.fade.js'
+				//'assets/imgRollover.fade.js'
 				],
 				dest : 'js/imgRollover.js'
 			}
