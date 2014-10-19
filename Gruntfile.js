@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 				'assets/imgRollover.namespace.js',
 				'assets/imgRollover.base.js',
 				'assets/imgRollover.default.js',
-				//'assets/imgRollover.fade.js'
+				'assets/imgRollover.fade.js'
 				],
 				dest : 'js/imgRollover.js'
 			}
