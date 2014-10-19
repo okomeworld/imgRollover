@@ -9,18 +9,16 @@ var ImgRollover = ImgRollover || {};
 
 (function($){
 
-	ImgRollover.Utils = function(el,suffix,time){
-		this.el = el || '.imgOver';
+	ImgRollover.Base = function(el,suffix,opt){
+		this.el     = el     || $('.imgOver');
 		this.suffix = suffix || '_o';
-		if(time === undefined){
-			this.time = 200;
-		}else{
-			this.time = time;
-		}
+
+		this.prepare(opt);
+		this.setEvent();
 	}
 
 
-	ImgRollover.Utils.prototype = {
+	ImgRollover.Base.prototype = {
 
 		//画像パスを取得
 		getSrc: function($self){
@@ -35,6 +33,37 @@ var ImgRollover = ImgRollover || {};
 		//画像のパスから接尾語を削除する
 		removeSuffix: function($self){
 			return this.getSrc($self).replace(this.suffix,'');
+		},
+
+		//イベントハンドラの追加
+		setEvent: function(){
+			var that = this;
+			that.el.on({
+				mouseover:  function(){
+					var $el = $(this);
+					that.onMouseOverEffect($el);
+				},
+				mouseleave: function(){
+					var $el = $(this);
+					that.onMouseLeaveEffect($el);
+				}
+
+			});
+		},
+
+		// [abstract] イベントハンドラに必要なパラメータを準備する
+		prepare: function(opt){
+			if (console) console.error("Must Implement prepare method!!");
+		},
+
+		// [abstract] mouseoverのイベントハンドラ
+		onMouseOverEffect: function(){
+			if (console) console.error("Must Implement onMouseOverEffect method!!");
+		},
+
+		// [abstract] mouseleaveのイベントハンドラ
+		onMouseLeaveEffect: function(){
+			if (console) console.error("Must Implement onMouseLeaveEffect method!!");
 		}
 
 	}
@@ -47,38 +76,31 @@ var ImgRollover = ImgRollover || {};
 
 (function($){
 
-	ImgRollover.Default = function(el,suffix){
-		this.utils = new ImgRollover.Utils(el,suffix);
-		this.el = $(this.utils.el);
-		this.preload();
-		this.event();
-	}
+	ImgRollover.Default = function(){
+		ImgRollover.Base.apply(this, arguments);
+	};
 
-	ImgRollover.Default.prototype = {
+	$.extend(ImgRollover.Default.prototype, ImgRollover.Base.prototype, {
 
-		event: function(){
-			var that = this;
-			that.el.on({
-				mouseover: function(){
-					var $self = $(this);
-					$self.attr('src', that.utils.addSuffix($self));
-				},
-				mouseleave: function(){
-					var $self = $(this);
-					$self.attr('src', that.utils.removeSuffix($self));
-				}
-			});
-		},
-
-		preload: function(){
+		prepare: function(opt){
+			// 画像のプレロード
+			// これもどのパターンでも使いそうなんでBaseに定義したよさげ
 			var that = this;
 			that.el.each(function(){
 				var $self = $(this);
-				$('<img />').attr('src',that.utils.addSuffix($self));
+				$('<img />').attr('src',that.addSuffix($self));
 			});
+		},
+
+		onMouseOverEffect: function($el){
+			$el.attr('src', this.addSuffix($el));
+		},
+
+		onMouseLeaveEffect: function($el){
+			$el.attr('src', this.removeSuffix($el));
 		}
 
-	}
+	});
 
 })(jQuery);
 
@@ -88,65 +110,47 @@ var ImgRollover = ImgRollover || {};
 
 (function($){
 
-	ImgRollover.Fade = function(el,suffix,time){
-		this.utils = new ImgRollover.Utils(el,suffix,time);
-		this.el = $(this.utils.el);
-		this.time = this.utils.time;
-		this.setting();
-		this.event();
+	ImgRollover.Fade = function(){
+		ImgRollover.Base.apply(this, arguments);
 	}
 
-	ImgRollover.Fade.prototype = {
+	$.extend(ImgRollover.Fade.prototype, ImgRollover.Base.prototype, {
 
-		event: function(){
+		prepare: function(opt) {
 			var that = this;
-			that.el.on({
-				mouseover: function(){
-					$(this).stop().fadeTo(that.time, 0);
-				},
-				mouseleave: function(){
-					$(this).stop().fadeTo(that.time, 1);
-				}
-			});
-		},
+			opt = opt || {};
 
-		setting: function(){
-			var that = this;
+			// フェードエフェクトにかける時間
+			that.time = (opt.time !== undefined) ? opt.time : 200;
+
 			that.el.each(function(){
 				var $self = $(this);
-				var $parent = $self.parent();
-				var $overImg = that.cloneImg($self);
-				that.setOverImg($parent, $overImg);
-				that.setParentStyle($parent);
-				that.setImgStyle($self, 'absolute', 20);
-				that.setImgStyle($overImg, 'relative', 10);
+
+				// マウスオーバー用imgエレメントの生成
+				var $clone  = $self.clone();
+				$clone.attr('src', that.addSuffix($self));
+				$clone.css({
+					'position' : 'absolute',
+					'display'  : 'block',
+					'top'      : $self.offset().top,
+					'left'     : $self.offset().left,
+					'zIndex'   : -10
+				});
+
+				$self.after($clone);
 			});
 		},
 
-		cloneImg: function($self){
-			return $self.clone().attr('src', this.utils.addSuffix($self));
+		onMouseOverEffect: function($el){
+			var that = this;
+			$el.stop().fadeTo(that.time, 0);
 		},
 
-		setOverImg: function($parent, $overImg){
-			$parent.append($overImg)
-		},
-
-		setParentStyle: function($parent){
-			$parent.css({
-				'position': 'relative',
-				'display': 'block'
-			});
-		},
-
-		setImgStyle: function($el,position,z){
-			$el.css({
-				'position': position,
-				'zIndex': z,
-				'top': 0,
-				'left': 0
-			});
+		onMouseLeaveEffect: function($el){
+			var that = this;
+			$el.stop().fadeTo(that.time, 1);
 		}
 
-	}
+	});
 
 })(jQuery);
